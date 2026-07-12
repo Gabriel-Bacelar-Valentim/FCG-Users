@@ -1,0 +1,29 @@
+# Arquivos de build e binários
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Pastas de pacotes NuGet
+packages/
+*.nupkg
+
+# Configurações do ambiente
+.vs/
+.vscode/
+.env
+
+# Arquivos de banco de dados (se não quiser versionar os arquivos .db ou .sqlite)
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.bak
+
+# Pastas de saída de testes
+TestResults/
