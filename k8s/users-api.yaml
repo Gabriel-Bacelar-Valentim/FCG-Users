@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-api
+  template:
+    metadata:
+      labels:
+        app: users-api
+    spec:
+      containers:
+      - name: users-api
+        image: orchestration-users-api:latest
+        imagePullPolicy: Never 
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: fcg-config
+        - secretRef:
+            name: fcg-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-api
+spec:
+  type: LoadBalancer
+  selector:
+    app: users-api
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30001 # Você acessará via http://localhost:30001
