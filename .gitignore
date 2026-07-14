@@ -27,3 +27,6 @@ packages/
 
 # Pastas de saída de testes
 TestResults/
+
+# Ignorar segredos do Kubernetes
+#**/k8s/secret.yaml

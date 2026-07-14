@@ -47,6 +47,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+var rabbitHost = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
+
 builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
@@ -55,7 +57,7 @@ builder.Services.AddMassTransit(x =>
     {
         cfg.UseMessageRetry(r => r.None());
 
-        cfg.Host("rabbitmq", "/", h =>
+        cfg.Host(rabbitHost, "/", h =>
         {
             h.Username("guest");
             h.Password("guest");
@@ -65,8 +67,10 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
-builder.Services.AddDbContext<FcgDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+                       ?? builder.Configuration.GetConnectionString("FcgDb");
+
+builder.Services.AddDbContext<FcgDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly));
 
